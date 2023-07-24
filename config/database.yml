@@ -32,6 +32,8 @@ development:
     password: <%= ENV.fetch('DATABASE_PASSWORD', 'postgres') %>
     database: firsttenant
     migrations_paths: db/first_tenant_migrations
+    host:     <%= ENV.fetch('DATABASE_HOST', 'localhost') %>
+
   secondtenant:
     adapter: postgresql
     schema_search_path: "public,shared_extensions"
@@ -39,6 +41,8 @@ development:
     password: <%= ENV.fetch('DATABASE_PASSWORD', 'postgres') %>
     database: secondtenant
     migrations_paths: db/second_tenant_migrations
+    host:     <%= ENV.fetch('DATABASE_HOST', 'localhost') %>
+
   # amine:
   #   adapter: postgresql
   #   schema_search_path: "public,shared_extensions"

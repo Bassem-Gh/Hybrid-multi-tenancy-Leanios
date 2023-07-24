@@ -4,7 +4,7 @@
 # Apartment can support many different "Elevators" that can take care of this routing to your data.
 # Require whichever Elevator you're using below or none if you have a custom one.
 #
-# require 'apartment/elevators/generic'
+require 'apartment/elevators/generic'
 # require 'apartment/elevators/domain'
 require 'apartment/elevators/subdomain'
 # require 'apartment/elevators/first_subdomain'
@@ -26,37 +26,82 @@ Apartment.configure do |config|
   # - a hash which keys are tenant names, and values custom db config
   # (must contain all key/values required in database.yml)
   #
-  config.tenant_names = -> { Company.pluck(:subdomain) }
-  #config.tenant_names = %w[tenant1 tenant2]
+  # config.tenant_names = -> { Company.pluck(:subdomain) }
+  # config.tenant_names = %w[tenant1 tenant2]
+  config.with_multi_server_setup = true
   config.tenant_names = {
     'firsttenant' => {
       adapter: 'postgresql',
-      user:     'first_tenant',
+      user: 'first_tenant',
       password: 'postgres',
+      host: 'firsttenant.lvh.me:3000',
       database: 'multiCompaniesDb', # this is not the name of the tenant's db
       # but the name of the database to connect to before creating the tenant's db
       # mandatory in postgresql
       migrations_paths: 'db/first_tenant_migrations'
 
     },
-    'secondtenant' => {
-      adapter: 'postgresql',
-      user:     'second_tenant',
-      password: 'postgres',
-      database: 'multiCompaniesDb', # this is not the name of the tenant's db
-      # but the name of the database to connect to before creating the tenant's db
-      # mandatory in postgresql
-      migrations_paths: 'db/second_tenant_migrations'
-    }
-    # 'amine'=> {
+    # 'secondtenant' => {
     #   adapter: 'postgresql',
     #   user:     'second_tenant',
     #   password: 'postgres',
-    #   database: 'second_tenant_dev', # this is not the name of the tenant's db
+    #   database: 'multiCompaniesDb', # this is not the name of the tenant's db
     #   # but the name of the database to connect to before creating the tenant's db
     #   # mandatory in postgresql
-    #   migrations_paths: 'db/Bassem_tenant_migrations'
+    #   migrations_paths: 'db/second_tenant_migrations'
     # }
+    'amine' => {
+      adapter: 'postgresql',
+      user: 'first_tenant',
+      password: 'postgres',
+      host: 'lvh.me:3000',
+      database: 'multiCompaniesDb', # this is not the name of the tenant's db
+      # but the name of the database to connect to before creating the tenant's db
+      # mandatory in postgresql
+      migrations_paths: 'db/amine_tenant_migrations'
+    },
+    'tenant2' => {
+      adapter: 'postgresql',
+      user: 'postgres',
+      password: 'postgres',
+      host: 'tenant2.lvh.me:3000',
+      database: 'primary', # this is not the name of the tenant's db
+      # but the name of the database to connect to before creating the tenant's db
+      # mandatory in postgresql
+      migrations_paths: 'db/amine_tenant_migrations'
+    },
+    # 'bassem' => {
+    #   adapter: 'postgresql',
+    #   user: 'postgres',
+    #   password: 'postgres',
+    #   host: 'bassem.lvh.me:3000',
+    #   database: 'primary' # this is not the name of the tenant's db
+    #   # but the name of the database to connect to before creating the tenant's db
+    #   # mandatory in postgresql
+
+    # },
+
+    'tesla' => {
+      adapter: 'postgresql',
+      user: 'postgres',
+      password: 'postgres',
+      host: 'tesla.lvh.me:3000',
+      database: 'primary' # this is not the name of the tenant's db
+      # but the name of the database to connect to before creating the tenant's db
+      # mandatory in postgresql
+
+    },
+    'secondtenant' => {
+      adapter: 'postgresql',
+      user: 'postgres',
+      password: 'postgres',
+      host: 'secondtenant.lvh.me:3000',
+      database: 'primary' # this is not the name of the tenant's db
+      # but the name of the database to connect to before creating the tenant's db
+      # mandatory in postgresql
+
+    }
+
   }
   # config.tenant_names = lambda do
   #   Tenant.all.each_with_object({}) do |tenant, hash|
@@ -122,6 +167,7 @@ end
 # you want to switch to.
 # Rails.application.config.middleware.use Apartment::Elevators::Generic, lambda { |request|
 #   request.host.split('.').first
+#   #request
 # }
 
 # Rails.application.config.middleware.use Apartment::Elevators::Domain
