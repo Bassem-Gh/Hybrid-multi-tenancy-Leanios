@@ -18,8 +18,10 @@ module HybridMultiTenant
     config.middleware.use Apartment::Elevators::Generic, proc { |request|
                                                            subdomain = request.host.split('.').first
 
+
                                                            if subdomain == 'www' || subdomain.nil?
-                                                             Apartment::Tenant.switch!('public')
+                                                            ActiveRecord::Base.establish_connection(:primary)
+                                                            Apartment::Tenant.switch!('public')
 
                                                            else
                                                              # Look up the Tenant record based on the tenant_name
@@ -28,7 +30,7 @@ module HybridMultiTenant
 
                                                              # Switch to the corresponding tenant database
                                                              ActiveRecord::Base.establish_connection(tenant.database.to_sym)
-                                                             Apartment::Tenant.switch!(tenant.database)
+                                                             Apartment::Tenant.switch!(tenant.subdomain.to_sym)
                                                            end
                                                          }
 

@@ -30,79 +30,17 @@ Apartment.configure do |config|
   # config.tenant_names = %w[tenant1 tenant2]
   config.with_multi_server_setup = true
   config.tenant_names = {
-    'firsttenant' => {
-      adapter: 'postgresql',
-      user: 'first_tenant',
-      password: 'postgres',
-      host: 'firsttenant.lvh.me:3000',
-      database: 'multiCompaniesDb', # this is not the name of the tenant's db
-      # but the name of the database to connect to before creating the tenant's db
-      # mandatory in postgresql
-      migrations_paths: 'db/first_tenant_migrations'
-
-    },
-    # 'secondtenant' => {
-    #   adapter: 'postgresql',
-    #   user:     'second_tenant',
-    #   password: 'postgres',
-    #   database: 'multiCompaniesDb', # this is not the name of the tenant's db
-    #   # but the name of the database to connect to before creating the tenant's db
-    #   # mandatory in postgresql
-    #   migrations_paths: 'db/second_tenant_migrations'
-    # }
-    'amine' => {
-      adapter: 'postgresql',
-      user: 'first_tenant',
-      password: 'postgres',
-      host: 'lvh.me:3000',
-      database: 'multiCompaniesDb', # this is not the name of the tenant's db
-      # but the name of the database to connect to before creating the tenant's db
-      # mandatory in postgresql
-      migrations_paths: 'db/amine_tenant_migrations'
-    },
-    'tenant2' => {
+    'secondtest' => {
       adapter: 'postgresql',
       user: 'postgres',
       password: 'postgres',
-      host: 'tenant2.lvh.me:3000',
       database: 'primary', # this is not the name of the tenant's db
       # but the name of the database to connect to before creating the tenant's db
       # mandatory in postgresql
-      migrations_paths: 'db/amine_tenant_migrations'
-    },
-    # 'bassem' => {
-    #   adapter: 'postgresql',
-    #   user: 'postgres',
-    #   password: 'postgres',
-    #   host: 'bassem.lvh.me:3000',
-    #   database: 'primary' # this is not the name of the tenant's db
-    #   # but the name of the database to connect to before creating the tenant's db
-    #   # mandatory in postgresql
-
-    # },
-
-    'tesla' => {
-      adapter: 'postgresql',
-      user: 'postgres',
-      password: 'postgres',
-      host: 'tesla.lvh.me:3000',
-      database: 'primary' # this is not the name of the tenant's db
-      # but the name of the database to connect to before creating the tenant's db
-      # mandatory in postgresql
-
-    },
-    'secondtenant' => {
-      adapter: 'postgresql',
-      user: 'postgres',
-      password: 'postgres',
-      host: 'secondtenant.lvh.me:3000',
-      database: 'primary' # this is not the name of the tenant's db
-      # but the name of the database to connect to before creating the tenant's db
-      # mandatory in postgresql
-
-    }
-
+      #migrations_paths: 'db/first_tenant_migrations'
+ }
   }
+
   # config.tenant_names = lambda do
   #   Tenant.all.each_with_object({}) do |tenant, hash|
   #     hash[tenant.name] = tenant.db_configuration

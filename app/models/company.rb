@@ -9,6 +9,7 @@ class Company < ApplicationRecord
 
       # Establish connection to the given database
       ActiveRecord::Base.establish_connection(database.to_sym)
+
       Apartment::Tenant.create(subdomain)
 
       # Switch back to the primary database
