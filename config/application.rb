@@ -13,26 +13,24 @@ module HybridMultiTenant
     config.load_defaults 6.1
     config.autoload_paths += Dir[Rails.root.join('app', 'models')]
 
-    # config.middleware.use Apartment::Elevators::Subdomain
+     config.middleware.use Apartment::Elevators::Subdomain
     # config.middleware.use Apartment::Elevators::Host# Use the custom elevator you created
-    config.middleware.use Apartment::Elevators::Generic, proc { |request|
-                                                           subdomain = request.host.split('.').first
+    # config.middleware.use Apartment::Elevators::Generic, proc { |request|
+    #                                                        subdomain = request.host.split('.').first
+    #                                                        if subdomain == 'www' || subdomain.nil?
+    #                                                         ActiveRecord::Base.establish_connection(:primary)
+    #                                                         Apartment::Tenant.switch!('public')
 
+    #                                                        else
+    #                                                          # Look up the Tenant record based on the tenant_name
+    #                                                          ActiveRecord::Base.establish_connection(:primary)
+    #                                                          tenant = Company.find_by(subdomain: subdomain)
 
-                                                           if subdomain == 'www' || subdomain.nil?
-                                                            ActiveRecord::Base.establish_connection(:primary)
-                                                            Apartment::Tenant.switch!('public')
-
-                                                           else
-                                                             # Look up the Tenant record based on the tenant_name
-                                                             ActiveRecord::Base.establish_connection(:primary)
-                                                             tenant = Company.find_by(subdomain: subdomain)
-
-                                                             # Switch to the corresponding tenant database
-                                                             ActiveRecord::Base.establish_connection(tenant.database.to_sym)
-                                                             Apartment::Tenant.switch!(tenant.subdomain.to_sym)
-                                                           end
-                                                         }
+    #                                                          # Switch to the corresponding tenant database
+    #                                                          ActiveRecord::Base.establish_connection(tenant.database.to_sym)
+    #                                                          Apartment::Tenant.switch!(tenant.subdomain.to_sym)
+    #                                                        end
+    #                                                      }
 
     # config.paths['db/migrate'] = ['db/first_tenant_migrations', 'db/second_tenant_migrations']
 

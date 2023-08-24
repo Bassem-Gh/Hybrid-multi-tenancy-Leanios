@@ -29,24 +29,24 @@ Apartment.configure do |config|
   # config.tenant_names = -> { Company.pluck(:subdomain) }
   # config.tenant_names = %w[tenant1 tenant2]
   config.with_multi_server_setup = true
-  config.tenant_names = {
-    'secondtest' => {
-      adapter: 'postgresql',
-      user: 'postgres',
-      password: 'postgres',
-      database: 'primary', # this is not the name of the tenant's db
-      # but the name of the database to connect to before creating the tenant's db
-      # mandatory in postgresql
-      #migrations_paths: 'db/first_tenant_migrations'
- }
-  }
+  #   config.tenant_names = {
+  #     'demo' => {
+  #       adapter: 'postgresql',
+  #       user: 'postgres',
+  #       password: 'postgres',
+  #       database: 'primary # this is not the name of the tenant'
+  #       # but the name of the database to connect to before creating the tenant's db
+  #       # mandatory in postgresql
+  #       #migrations_paths: 'db/first_tenant_migrations'
+  #  }
+  #   }
 
-  # config.tenant_names = lambda do
-  #   Tenant.all.each_with_object({}) do |tenant, hash|
-  #     hash[tenant.name] = tenant.db_configuration
-  #   end
-  # end
-  #
+  config.tenant_names = lambda do
+    Company.all.each_with_object({}) do |company, hash|
+      hash[company.subdomain] = company.database.to_sym
+    end
+  end
+
   # config.tenant_names = -> { Company.pluck :subdomain }
 
   # PostgreSQL:
