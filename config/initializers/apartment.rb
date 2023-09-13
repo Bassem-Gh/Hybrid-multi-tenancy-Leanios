@@ -14,19 +14,19 @@ require 'apartment/elevators/host'
 # Apartment Configuration
 #
 Apartment.configure do |config|
+  config.active_record_log = true
+
   # Add any models that you do not want to be multi-tenanted, but remain in the global (public) namespace.
   # A typical example would be a Customer or Tenant model that stores each Tenant's information.
   #
-  config.excluded_models = %w[Company]
-
-  # In order to migrate all of your Tenants you need to provide a list of Tenant names to Apartment.
+  config.excluded_models = ["Company"]   # In order to migrate all of your Tenants you need to provide a list of Tenant names to Apartment.
   # You can make this dynamic by providing a Proc object to be called on migrations.
   # This object should yield either:
   # - an array of strings representing each Tenant name.
   # - a hash which keys are tenant names, and values custom db config
   # (must contain all key/values required in database.yml)
   #
-  # config.tenant_names = -> { Company.pluck(:subdomain) }
+  config.tenant_names = -> { Company.pluck(:subdomain) }
   # config.tenant_names = %w[tenant1 tenant2]
   config.with_multi_server_setup = true
   #   config.tenant_names = {
@@ -44,6 +44,7 @@ Apartment.configure do |config|
   config.tenant_names = lambda do
     Company.all.each_with_object({}) do |company, hash|
       hash[company.subdomain] = company.database.to_sym
+      Rails.logger.debug("Switching to #{company.subdomain} - #{company.database.to_sym}")
     end
   end
 

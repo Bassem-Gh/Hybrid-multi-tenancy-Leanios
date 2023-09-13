@@ -3,6 +3,5 @@ class Company < ApplicationRecord
 
   def create_tenant
     Apartment::Tenant.create(subdomain)
-
   end
 end

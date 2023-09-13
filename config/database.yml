@@ -26,6 +26,7 @@ default: &default
   user:     <%= ENV.fetch('DATABASE_USER', 'postgres') %>
   password: <%= ENV.fetch('DATABASE_PASSWORD', 'postgres') %>
   sslmode:  <%= ENV.fetch('DATABASE_SSL_MODE', nil) %>
+  schema_search_path: "public,shared_extensions"
 
 
 development:

@@ -12,8 +12,7 @@ module HybridMultiTenant
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.1
     config.autoload_paths += Dir[Rails.root.join('app', 'models')]
-
-     config.middleware.use Apartment::Elevators::Subdomain
+    config.middleware.use Apartment::Elevators::Subdomain
     # config.middleware.use Apartment::Elevators::Host# Use the custom elevator you created
     # config.middleware.use Apartment::Elevators::Generic, proc { |request|
     #                                                        subdomain = request.host.split('.').first
