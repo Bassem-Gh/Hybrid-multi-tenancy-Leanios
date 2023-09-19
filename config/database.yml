@@ -24,22 +24,22 @@ development:
     password: <%= ENV.fetch('DATABASE_PASSWORD', 'postgres') %>
     sslmode:  <%= ENV.fetch('DATABASE_SSL_MODE', nil) %>
     adapter: postgresql
-    database: multiCompaniesDb
-  firsttenant:
+    database: primary
+  second:
     adapter: postgresql
     schema_search_path: "public,shared_extensions"
     user:     <%= ENV.fetch('DATABASE_USER', 'first_tenant') %>
     password: <%= ENV.fetch('DATABASE_PASSWORD', 'postgres') %>
-    database: firsttenant
+    database: secondary_database
     migrations_paths: db/first_tenant_migrations
     host:     <%= ENV.fetch('DATABASE_HOST', 'localhost') %>
 
-  secondtenant:
+  third:
     adapter: postgresql
     schema_search_path: "public,shared_extensions"
     user:     <%= ENV.fetch('DATABASE_USER', 'second_tenant') %>
     password: <%= ENV.fetch('DATABASE_PASSWORD', 'postgres') %>
-    database: secondtenant
+    database: third_database
     migrations_paths: db/second_tenant_migrations
     host:     <%= ENV.fetch('DATABASE_HOST', 'localhost') %>
 
