@@ -60,3 +60,4 @@ gem 'ros-apartment', require: 'apartment'
 gem 'pg'
 gem "net-http"
 gem "uri"
+gem 'pry-rails'

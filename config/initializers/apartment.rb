@@ -18,7 +18,8 @@ Apartment.configure do |config|
   # A typical example would be a Customer or Tenant model that stores each Tenant's information.
   #
   config.excluded_models = %w[Company]
-
+  # config.tenant_presence_check = false
+  config.active_record_log = true
   # In order to migrate all of your Tenants you need to provide a list of Tenant names to Apartment.
   # You can make this dynamic by providing a Proc object to be called on migrations.
   # This object should yield either:
@@ -26,75 +27,60 @@ Apartment.configure do |config|
   # - a hash which keys are tenant names, and values custom db config
   # (must contain all key/values required in database.yml)
   #
-   config.tenant_names = -> { Company.pluck(:subdomain) }
+  # config.tenant_names = -> { Company.pluck(:subdomain) }
   # config.tenant_names = %w[tenant1 tenant2]
-  config.with_multi_server_setup = true
-  # config.tenant_names = {
-  #   'audi' => {
-  #     adapter: 'postgresql',
-  #     user: 'postgres',
-  #     password: 'postgres',
-  #     database: 'primary' # this is not the name of the tenant's db
-  #     # but the name of the database to connect to before creating the tenant's db
-  #     # mandatory in postgresql
-  #     # migrations_paths: 'db/first_tenant_migrations'
-  #   }
-  # }
-  # tenant_names = {
-  #   'mercedes' => {
-  #     adapter: 'postgresql',
-  #     user: 'postgres',
-  #     password: 'postgres',
-  #     host: 'localhost',
-  #     database: 'primary' # this is not the name of the tenant's db
-  #     # but the name of the database to connect to before creating the tenant's db
-  #     # mandatory in postgresql
-  #     # migrations_paths: 'db/first_tenant_migrations'
-  #   },
-  #   'tesla' => {
-  #     adapter: 'postgresql',
-  #     user: 'postgres',
-  #     password: 'postgres',
-  #     host: 'localhost',
-  #     database: 'secondary_database' # this is not the name of the tenant's db
-  #     # but the name of the database to connect to before creating the tenant's db
-  #     # mandatory in postgresql
-  #     # migrations_paths: 'db/first_tenant_migrations'
-  #   },
-  #   'audi' => {
-  #     adapter: 'postgresql',
-  #     user: 'postgres',
-  #     password: 'postgres',
-  #     host: 'localhost',
-  #     database: 'third' # this is not the name of the tenant's db
-  #     # but the name of the database to connect to before creating the tenant's db
-  #     # mandatory in postgresql
-  #     # migrations_paths: 'db/first_tenant_migrations'
-  #   },
-  #      'ford' => {
-  #     adapter: 'postgresql',
-  #     user: 'postgres',
-  #     password: 'postgres',
-  #     host: 'localhost',
-  #     database: 'third_database' # this is not the name of the tenant's db
-  #     # but the name of the database to connect to before creating the tenant's db
-  #     # mandatory in postgresql
-  #     # migrations_paths: 'db/first_tenant_migrations'
-  #   }
-  # }
+  #config.with_multi_server_setup = true
+  config.tenant_names = {
+    # 'audi' => {
+    #   adapter: 'postgresql',
+    #   user: 'postgres',
+    #   password: 'postgres',
+    #   database: 'third_database' # this is not the name of the tenant's db
+    #   # but the name of the database to connect to before creating the tenant's db
+    #   # mandatory in postgresql
+    #   # migrations_paths: 'db/first_tenant_migrations'
+    # },
+    'mercedes' => {
+      adapter: 'postgresql',
+      user: 'postgres',
+      password: 'postgres',
+      host: 'localhost',
+      database: 'primary' # this is not the name of the tenant's db
+      # but the name of the database to connect to before creating the tenant's db
+      # mandatory in postgresql
+      # migrations_paths: 'db/first_tenant_migrations'
+    },
+    'tesla'=> {
+      adapter: 'postgresql',
+      user: 'postgres',
+      password: 'postgres',
+      host: 'localhost',
+      database: 'secondary_database',
+      sslmode: nil,
+    },
+    'honda' => {
+      adapter: 'postgresql',
+      user: 'postgres',
+      password: 'postgres',
+      host: 'localhost',
+      database: 'third_database' # this is not the name of the tenant's db
+      # but the name of the database to connect to before creating the tenant's db
+      # mandatory in postgresql
+      # migrations_paths: 'db/first_tenant_migrations'
+    }
+  }
 
-  config.tenant_names = lambda do
-    Company.all.each_with_object({}) do |tenant, hash|
-      hash[tenant.subdomain] = {
-        adapter: 'postgresql',
-        user: 'postgres',
-        password: 'postgres',
-        database: 'primary' # Use the actual database name for the tenant
-        # Other configuration options specific to this company's database connection
-      }
-    end
-  end
-  # config.tenant_names = -> { Company.pluck :subdomain }
+  # config.tenant_names = lambda do
+  #   Company.all.each_with_object({}) do |tenant, hash|
+  #     hash[tenant.subdomain] = {
+  #       adapter: 'postgresql',
+  #       user: 'postgres',
+  #       password: 'postgres',
+  #       database: 'secondary_database'# Use the actual database name for the tenant
+  #       # Other configuration options specific to this company's database connection
+  #     }
+  #   end
+  # end
 
   # PostgreSQL:
   #   Specifies whether to use PostgreSQL schemas or create a new database per Tenant.
@@ -104,7 +90,7 @@ Apartment.configure do |config|
   #
   # The default behaviour is true.
   #
-  #  config.use_schemas = false
+    config.use_schemas = false
 
   #
   # ==> PostgreSQL only options
@@ -156,7 +142,7 @@ end
 # }
 
 # Rails.application.config.middleware.use Apartment::Elevators::Domain
-#Rails.application.config.middleware.use Apartment::Elevators::Subdomain
+# Rails.application.config.middleware.use Apartment::Elevators::Subdomain
 # Rails.application.config.middleware.use Apartment::Elevators::FirstSubdomain
 # Rails.application.config.middleware.use Apartment::Elevators::Host
 Apartment::Elevators::Subdomain.excluded_subdomains = ['www']

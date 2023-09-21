@@ -17,31 +17,31 @@ default: &default
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:
+
   primary:
-    schema_search_path: "public,shared_extensions"
     host:     <%= ENV.fetch('DATABASE_HOST', 'localhost') %>
     user:     <%= ENV.fetch('DATABASE_USER', 'postgres') %>
     password: <%= ENV.fetch('DATABASE_PASSWORD', 'postgres') %>
     sslmode:  <%= ENV.fetch('DATABASE_SSL_MODE', nil) %>
     adapter: postgresql
     database: primary
-  second:
-    adapter: postgresql
-    schema_search_path: "public,shared_extensions"
-    user:     <%= ENV.fetch('DATABASE_USER', 'first_tenant') %>
-    password: <%= ENV.fetch('DATABASE_PASSWORD', 'postgres') %>
-    database: secondary_database
-    migrations_paths: db/first_tenant_migrations
-    host:     <%= ENV.fetch('DATABASE_HOST', 'localhost') %>
+  # second:
+  #   adapter: postgresql
+  #   schema_search_path: "public,shared_extensions"
+  #   user:     <%= ENV.fetch('DATABASE_USER', 'first_tenant') %>
+  #   password: <%= ENV.fetch('DATABASE_PASSWORD', 'postgres') %>
+  #   database: secondary_database
+  #   migrations_paths: db/first_tenant_migrations
+  #   host:     <%= ENV.fetch('DATABASE_HOST', 'localhost') %>
 
-  third:
-    adapter: postgresql
-    schema_search_path: "public,shared_extensions"
-    user:     <%= ENV.fetch('DATABASE_USER', 'second_tenant') %>
-    password: <%= ENV.fetch('DATABASE_PASSWORD', 'postgres') %>
-    database: third_database
-    migrations_paths: db/second_tenant_migrations
-    host:     <%= ENV.fetch('DATABASE_HOST', 'localhost') %>
+  # third:
+  #   adapter: postgresql
+  #   schema_search_path: "public,shared_extensions"
+  #   user:     <%= ENV.fetch('DATABASE_USER', 'second_tenant') %>
+  #   password: <%= ENV.fetch('DATABASE_PASSWORD', 'postgres') %>
+  #   database: third_database
+  #   migrations_paths: db/second_tenant_migrations
+  #   host:     <%= ENV.fetch('DATABASE_HOST', 'localhost') %>
 
   # amine:
   #   adapter: postgresql
