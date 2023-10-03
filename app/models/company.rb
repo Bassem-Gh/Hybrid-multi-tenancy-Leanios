@@ -5,15 +5,17 @@ class Company < ApplicationRecord
     if database == 'primary'
       Apartment::Tenant.create(subdomain)
     else
-      previous_connection_config = ActiveRecord::Base.connection_config
-
-      # Establish connection to the given database
-      ActiveRecord::Base.establish_connection(database.to_sym)
-
-      Apartment::Tenant.create(subdomain)
-
-      # Switch back to the primary database
-      ActiveRecord::Base.establish_connection(previous_connection_config)
+      previous_connection_config = ActiveRecord::Base.connection_db_config
+      tenant_config = db_configuration(subdomain)
+      if tenant_config
+        # Establish connection to the given database configuration
+        ActiveRecord::Base.establish_connection(tenant_config)
+        Apartment::Tenant.create(subdomain)
+        # Switch back to the primary database
+        ActiveRecord::Base.establish_connection(previous_connection_config)
+      else
+        puts "--------------Tenant configuration not found for subdomain: #{subdomain}"
+      end
     end
   rescue StandardError => e
     # Handle the exception here
@@ -50,12 +52,20 @@ class Company < ApplicationRecord
         'name' => 'mercedes',
         'db_host' => 'localhost',
         'db_port' => 5432,
-        'db_name' => 'third_database',
+        'db_name' => 'primary',
         'db_user' => 'postgres',
         'db_password' => 'postgres'
       },
       {
-        'name' => 'bmw',
+        'name' => 'honda',
+        'db_host' => 'localhost',
+        'db_port' => 5432,
+        'db_name' => 'secondary_database',
+        'db_user' => 'postgres',
+        'db_password' => 'postgres'
+      },
+      {
+        'name' => 'test',
         'db_host' => 'localhost',
         'db_port' => 5432,
         'db_name' => 'third_database',
@@ -89,7 +99,8 @@ class Company < ApplicationRecord
         port: config['db_port'],
         database: config['db_name'],
         username: config['db_user'],
-        password: config['db_password']
+        password: config['db_password'],
+        sslmode: nil
       }
     else
       # Handle configuration not found

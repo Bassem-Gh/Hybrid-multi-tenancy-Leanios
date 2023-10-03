@@ -31,7 +31,7 @@ development:
   #   user:     <%= ENV.fetch('DATABASE_USER', 'first_tenant') %>
   #   password: <%= ENV.fetch('DATABASE_PASSWORD', 'postgres') %>
   #   database: secondary_database
-  #   migrations_paths: db/first_tenant_migrations
+  #   #migrations_paths: db/first_tenant_migrations
   #   host:     <%= ENV.fetch('DATABASE_HOST', 'localhost') %>
 
   # third:
@@ -40,23 +40,8 @@ development:
   #   user:     <%= ENV.fetch('DATABASE_USER', 'second_tenant') %>
   #   password: <%= ENV.fetch('DATABASE_PASSWORD', 'postgres') %>
   #   database: third_database
-  #   migrations_paths: db/second_tenant_migrations
+  #   #migrations_paths: db/second_tenant_migrations
   #   host:     <%= ENV.fetch('DATABASE_HOST', 'localhost') %>
-
-  # amine:
-  #   adapter: postgresql
-  #   schema_search_path: "public,shared_extensions"
-  #   user:     <%= ENV.fetch('DATABASE_USER', 'postgres') %>
-  #   password: <%= ENV.fetch('DATABASE_PASSWORD', 'postgres') %>
-  #   database: firsttenant
-  #   migrations_paths: db/Bassem/migrations
-  # third_DB:
-  # adapter: postgresql
-  # schema_search_path: "public,shared_extensions"
-  # user:     <%= ENV.fetch('DATABASE_USER', 'postgres') %>
-  # password: <%= ENV.fetch('DATABASE_PASSWORD', 'postgres') %>
-  # database: second_tenant_dev
-  # migrations_paths: db/third_db_migrations
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".

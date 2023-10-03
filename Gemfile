@@ -57,7 +57,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'ros-apartment', require: 'apartment'
 
-gem 'pg'
+gem 'pg', '~> 1.5', '>= 1.5.4'
 gem "net-http"
 gem "uri"
 gem 'pry-rails'
