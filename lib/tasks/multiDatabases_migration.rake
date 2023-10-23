@@ -5,6 +5,8 @@ namespace :db do
     require 'active_record'
     puts "Applying #{args.task} on #{args.database}"
     ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[args.database])
+                puts ActiveRecord::Base.connection.current_database
+
     Rake::Task[args.task].invoke
   end
 end

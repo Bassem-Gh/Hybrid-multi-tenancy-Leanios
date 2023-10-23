@@ -13,7 +13,7 @@ module HybridMultiTenant
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.1
     config.autoload_paths += Dir[Rails.root.join('app', 'models')]
-
+    config.active_job.queue_adapter = :sidekiq
     # config.middleware.use Apartment::Elevators::Subdomain
     # config.middleware.use Apartment::Elevators::Host# Use the custom elevator you created
     config.middleware.use Apartment::Elevators::Generic, proc { |request|
@@ -30,9 +30,9 @@ module HybridMultiTenant
 
         if tenant
           # Use the database configuration from the Company model
-          db_config = tenant.db_configuration(subdomain)
-          if db_config.present?
-            ActiveRecord::Base.establish_connection(db_config)
+          #db_config = tenant.database_config(subdomain)
+          if tenant.database_config?
+            ActiveRecord::Base.establish_connection(tenant.database_config)
             Apartment::Tenant.switch!(tenant.subdomain.to_sym)
           else
             # Handle the case where the database configuration is not found

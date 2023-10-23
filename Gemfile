@@ -61,3 +61,4 @@ gem 'pg', '~> 1.5', '>= 1.5.4'
 gem "net-http"
 gem "uri"
 gem 'pry-rails'
+gem 'sidekiq'

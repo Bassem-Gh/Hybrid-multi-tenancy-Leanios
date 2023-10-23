@@ -19,15 +19,44 @@
   <div class="field">
     <%= form.label :subdomain %>
     <%= form.text_field :subdomain %>
+  </div>
 
+  <div class="field">
+    <%= form.fields_for :database_config do |db_config_fields| %>
+      <%= db_config_fields.label :adapter %>
+      <%= db_config_fields.text_field :adapter %>
     </div>
+
     <div class="field">
-      <%= form.label :database %>
-      <%= form.text_field :database %>
-
+      <%= db_config_fields.label :database %>
+      <%= db_config_fields.text_field :database %>
     </div>
+
+    <div class="field">
+      <%= db_config_fields.label :user %>
+      <%= db_config_fields.text_field :user %>
+    </div>
+
+    <div class="field">
+      <%= db_config_fields.label :password %>
+      <%= db_config_fields.text_field :password %>
+    </div>
+
+    <div class="field">
+      <%= db_config_fields.label :host %>
+      <%= db_config_fields.text_field :host %>
+    </div>
+
+    <div class="field">
+      <%= db_config_fields.label :port %>
+      <%= db_config_fields.text_field :port %>
+    </div>
+    <% end %>
+
+  </div>
 
   <div class="actions">
     <%= form.submit %>
   </div>
+
 <% end %>

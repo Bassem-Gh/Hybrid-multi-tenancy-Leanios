@@ -14,7 +14,7 @@ default: &default
   sslmode:  <%= ENV.fetch('DATABASE_SSL_MODE', nil) %>
   # For details on connection pooling, see rails configuration guide
   # http://guides.rubyonrails.org/configuring.html#database-pooling
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 10 } %>
 
 development:
 
@@ -26,22 +26,14 @@ development:
     adapter: postgresql
     database: primary
   # second:
-  #   adapter: postgresql
-  #   schema_search_path: "public,shared_extensions"
-  #   user:     <%= ENV.fetch('DATABASE_USER', 'first_tenant') %>
-  #   password: <%= ENV.fetch('DATABASE_PASSWORD', 'postgres') %>
+  #   <<: *default
   #   database: secondary_database
-  #   #migrations_paths: db/first_tenant_migrations
-  #   host:     <%= ENV.fetch('DATABASE_HOST', 'localhost') %>
+
 
   # third:
-  #   adapter: postgresql
-  #   schema_search_path: "public,shared_extensions"
-  #   user:     <%= ENV.fetch('DATABASE_USER', 'second_tenant') %>
-  #   password: <%= ENV.fetch('DATABASE_PASSWORD', 'postgres') %>
+  #   <<: *default
   #   database: third_database
-  #   #migrations_paths: db/second_tenant_migrations
-  #   host:     <%= ENV.fetch('DATABASE_HOST', 'localhost') %>
+
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
