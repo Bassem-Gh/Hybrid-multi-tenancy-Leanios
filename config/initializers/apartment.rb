@@ -30,35 +30,35 @@ Apartment.configure do |config|
   # config.tenant_names = %w[tenant1 tenant2]
 
   config.with_multi_server_setup = true
-  config.tenant_names = {
-    # 'mercedes' => {
-    #   adapter: 'postgresql',
-    #   user: 'postgres',
-    #   password: 'postgres',
-    #   database: 'primary',
-    #   sslmode: nil,
-    #   host: 'localhost'
-    # },
+  # config.tenant_names = {
+  #   # 'mercedes' => {
+  #   #   adapter: 'postgresql',
+  #   #   user: 'postgres',
+  #   #   password: 'postgres',
+  #   #   database: 'primary',
+  #   #   sslmode: nil,
+  #   #   host: 'localhost'
+  #   # },
 
-    'tesla' => {
-      adapter: 'postgresql',
-      user: 'postgres',
-      password: 'postgres',
-      database: 'secondary_database',
-      sslmode: nil,
-      host: 'localhost'
-    },
-    'bmw' => {
-      adapter: 'postgresql',
-      user: 'postgres',
-      password: 'postgres',
-      database: 'third_database',
-      sslmode: nil,
-      host: 'localhost'
+  #   'tesla' => {
+  #     adapter: 'postgresql',
+  #     user: 'postgres',
+  #     password: 'postgres',
+  #     database: 'secondary_database',
+  #     sslmode: nil,
+  #     host: 'localhost'
+  #   },
+  #   'bmw' => {
+  #     adapter: 'postgresql',
+  #     user: 'postgres',
+  #     password: 'postgres',
+  #     database: 'third_database',
+  #     sslmode: nil,
+  #     host: 'localhost'
 
-    }
+  #   }
 
-  }
+  # }
 
   # config.tenant_names = lambda do
   #   Company.all.each_with_object({}) do |company, hash|
@@ -78,11 +78,11 @@ Apartment.configure do |config|
   #   end
   # end
 
-  # config.tenant_names = lambda do
-  #   Company.all.each_with_object({}) do |tenant, hash|
-  #     hash[tenant.subdomain] = tenant.database_config
-  #   end
-  # end
+  config.tenant_names = lambda do
+    Company.all.each_with_object({}) do |tenant, hash|
+      hash[tenant.subdomain] = tenant.database_config
+    end
+  end
   # PostgreSQL:
   #   Specifies whether to use PostgreSQL schemas or create a new database per Tenant.
   #

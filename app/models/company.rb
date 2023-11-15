@@ -1,7 +1,8 @@
 class Company < ApplicationRecord
   attribute :database_config, :json, default: {}
   validate :validate_database_config_keys
-  attr_accessor :database_config_adapter, :database_config_host, :database_config_name, :database_config_user, :database_config_password, :port
+  attr_accessor :database_config_adapter, :database_config_host, :database_config_name, :database_config_user,
+                :database_config_password, :port
 
   after_commit :create_tenant
 
@@ -17,16 +18,15 @@ class Company < ApplicationRecord
   end
 
   def validate_database_config_keys
-    required_keys = ['adapter', 'host', 'database', 'user', 'password', 'port']
+    required_keys = %w[adapter host database user password port]
     config_hash = database_config || {}
 
     missing_keys = required_keys - config_hash.keys
 
-    if missing_keys.any?
-      errors.add(:database_config, "must include the following keys: #{missing_keys.join(', ')}")
-    end
-  end
+    return unless missing_keys.any?
 
+    errors.add(:database_config, "must include the following keys: #{missing_keys.join(', ')}")
+  end
 
   def create_tenant
     if database_config_name == 'primary'
@@ -48,7 +48,6 @@ class Company < ApplicationRecord
     # Handle the exception here
     puts "An error occurred: #{e.message}"
   end
-
 
   # def fetch_all_db_configurations
   #   [
