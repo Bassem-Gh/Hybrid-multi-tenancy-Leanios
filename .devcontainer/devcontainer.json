@@ -11,6 +11,7 @@
         },
         "ghcr.io/devcontainers/features/git:1": {
             "version": "latest"
+            
         },
         "ghcr.io/devcontainers/features/ruby:1": {
             "version": "2.7.6" // Change Ruby version as required
