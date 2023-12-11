@@ -4,11 +4,11 @@
 # Apartment can support many different "Elevators" that can take care of this routing to your data.
 # Require whichever Elevator you're using below or none if you have a custom one.
 #
-require 'apartment/elevators/generic'
+# require 'apartment/elevators/generic'
 # require 'apartment/elevators/domain'
 require 'apartment/elevators/subdomain'
 # require 'apartment/elevators/first_subdomain'
-require 'apartment/elevators/host'
+# require 'apartment/elevators/host'
 
 #
 # Apartment Configuration
@@ -19,7 +19,9 @@ Apartment.configure do |config|
   # Add any models that you do not want to be multi-tenanted, but remain in the global (public) namespace.
   # A typical example would be a Customer or Tenant model that stores each Tenant's information.
   #
-  config.excluded_models = ["Company"]   # In order to migrate all of your Tenants you need to provide a list of Tenant names to Apartment.
+  config.excluded_models = %w[Company]
+  # config.tenant_presence_check = false
+  # In order to migrate all of your Tenants you need to provide a list of Tenant names to Apartment.
   # You can make this dynamic by providing a Proc object to be called on migrations.
   # This object should yield either:
   # - an array of strings representing each Tenant name.
@@ -28,28 +30,61 @@ Apartment.configure do |config|
   #
   config.tenant_names = -> { Company.pluck(:subdomain) }
   # config.tenant_names = %w[tenant1 tenant2]
+
   config.with_multi_server_setup = true
-  #   config.tenant_names = {
-  #     'demo' => {
+  # config.tenant_names = {
+  #   # 'mercedes' => {
+  #   #   adapter: 'postgresql',
+  #   #   user: 'postgres',
+  #   #   password: 'postgres',
+  #   #   database: 'primary',
+  #   #   sslmode: nil,
+  #   #   host: 'localhost'
+  #   # },
+
+  #   'tesla' => {
+  #     adapter: 'postgresql',
+  #     user: 'postgres',
+  #     password: 'postgres',
+  #     database: 'secondary_database',
+  #     sslmode: nil,
+  #     host: 'localhost'
+  #   },
+  #   'bmw' => {
+  #     adapter: 'postgresql',
+  #     user: 'postgres',
+  #     password: 'postgres',
+  #     database: 'third_database',
+  #     sslmode: nil,
+  #     host: 'localhost'
+
+  #   }
+
+  # }
+
+  # config.tenant_names = lambda do
+  #   Company.all.each_with_object({}) do |company, hash|
+  #     hash[company.subdomain] = company.database.to_sym
+  #   end
+  # end
+  # config.tenant_names = lambda do
+  #   tenants = Company.all.each_with_object({}) do |company, hash|
+  #     hash[company.subdomain] = {
   #       adapter: 'postgresql',
   #       user: 'postgres',
   #       password: 'postgres',
-  #       database: 'primary # this is not the name of the tenant'
-  #       # but the name of the database to connect to before creating the tenant's db
-  #       # mandatory in postgresql
-  #       #migrations_paths: 'db/first_tenant_migrations'
-  #  }
-  #   }
+  #       database: company.database, # Use the actual database name here
+  #       migrations_paths: 'db/first_tenant_migrations'
+  #     }
+  #     Rails.logger.debug("Switching to #{company.subdomain} - #{company.database.to_sym}")
+  #   end
+  # end
 
   config.tenant_names = lambda do
-    Company.all.each_with_object({}) do |company, hash|
-      hash[company.subdomain] = company.database.to_sym
-      Rails.logger.debug("Switching to #{company.subdomain} - #{company.database.to_sym}")
+    Company.all.each_with_object({}) do |tenant, hash|
+      hash[tenant.subdomain] = tenant.database_config
     end
   end
-
-  # config.tenant_names = -> { Company.pluck :subdomain }
-
   # PostgreSQL:
   #   Specifies whether to use PostgreSQL schemas or create a new database per Tenant.
   #
@@ -99,7 +134,7 @@ Apartment.configure do |config|
   # Specifies whether the database and schema (when using PostgreSQL schemas) will prepend in ActiveRecord log.
   # Uncomment the line below if you want to enable this behavior.
   #
-  # config.active_record_log = true
+  config.active_record_log = true
 end
 
 # Setup a custom Tenant switching middleware. The Proc should return the name of the Tenant that
@@ -110,7 +145,7 @@ end
 # }
 
 # Rails.application.config.middleware.use Apartment::Elevators::Domain
-Rails.application.config.middleware.use Apartment::Elevators::Subdomain
+# Rails.application.config.middleware.use Apartment::Elevators::Subdomain
 # Rails.application.config.middleware.use Apartment::Elevators::FirstSubdomain
 # Rails.application.config.middleware.use Apartment::Elevators::Host
 Apartment::Elevators::Subdomain.excluded_subdomains = ['www']

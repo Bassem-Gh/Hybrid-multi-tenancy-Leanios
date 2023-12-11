@@ -18,7 +18,7 @@
       <tr>
         <td><%= company.email %></td>
         <td><%= company.subdomain %></td>
-        <td><%= company.database %></td>
+        <td><%= company.database_config['database'] %></td>
         <td><%= link_to 'Show', company %></td>
         <td><%= link_to 'Edit', edit_company_path(company) %></td>
         <td><%= link_to 'Destroy', company, method: :delete, data: { confirm: 'Are you sure?' } %></td>
