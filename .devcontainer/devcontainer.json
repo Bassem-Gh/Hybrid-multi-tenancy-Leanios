@@ -13,7 +13,7 @@
             "version": "latest"
         },
         "ghcr.io/devcontainers/features/ruby:1": {
-            "version": "3.2.0" // Change Ruby version as required
+            "version": "2.7.6" // Change Ruby version as required
         },
         "ghcr.io/devcontainers/features/node:1": {
             "version": 19 // Change Node version as required
@@ -45,7 +45,7 @@
                         "server": "db",
                         "port": 5432,
                         // update this to match config/database.yml
-                        "database": "ror_project_development",
+                        "database": "primary",
                         "username": "postgres",
                         "password": "postgres"
                     },
