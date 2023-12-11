@@ -62,24 +62,7 @@ Apartment.configure do |config|
 
   # }
 
-  # config.tenant_names = lambda do
-  #   Company.all.each_with_object({}) do |company, hash|
-  #     hash[company.subdomain] = company.database.to_sym
-  #   end
-  # end
-  # config.tenant_names = lambda do
-  #   tenants = Company.all.each_with_object({}) do |company, hash|
-  #     hash[company.subdomain] = {
-  #       adapter: 'postgresql',
-  #       user: 'postgres',
-  #       password: 'postgres',
-  #       database: company.database, # Use the actual database name here
-  #       migrations_paths: 'db/first_tenant_migrations'
-  #     }
-  #     Rails.logger.debug("Switching to #{company.subdomain} - #{company.database.to_sym}")
-  #   end
-  # end
-
+  
   config.tenant_names = lambda do
     Company.all.each_with_object({}) do |tenant, hash|
       hash[tenant.subdomain] = tenant.database_config

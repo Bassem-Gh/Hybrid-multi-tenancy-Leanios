@@ -42,7 +42,6 @@ module HybridMultiTenant
         end
       end
     }
-
     # config.paths['db/migrate'] = ['db/first_tenant_migrations', 'db/second_tenant_migrations']
 
     # Configuration for the application, engines, and railties goes here.
