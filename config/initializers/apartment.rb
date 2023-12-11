@@ -14,6 +14,8 @@ require 'apartment/elevators/subdomain'
 # Apartment Configuration
 #
 Apartment.configure do |config|
+  config.active_record_log = true
+
   # Add any models that you do not want to be multi-tenanted, but remain in the global (public) namespace.
   # A typical example would be a Customer or Tenant model that stores each Tenant's information.
   #
@@ -26,7 +28,7 @@ Apartment.configure do |config|
   # - a hash which keys are tenant names, and values custom db config
   # (must contain all key/values required in database.yml)
   #
-  # config.tenant_names = -> { Company.pluck(:subdomain) }
+  config.tenant_names = -> { Company.pluck(:subdomain) }
   # config.tenant_names = %w[tenant1 tenant2]
 
   config.with_multi_server_setup = true
