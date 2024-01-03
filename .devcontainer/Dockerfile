@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/vscode/devcontainers/base:ubuntu-22.04
+FROM mcr.microsoft.com/vscode/devcontainers/base:ubuntu-20.04
 
 # Default value to allow debug server to serve content over GitHub Codespace's port forwarding service
 # The value is a comma-separated list of allowed domains.
