@@ -62,4 +62,3 @@ gem "net-http"
 gem "uri"
 gem 'pry-rails'
 gem 'sidekiq'
-gem "leanios_consumers", path: "../fhsfdk"
