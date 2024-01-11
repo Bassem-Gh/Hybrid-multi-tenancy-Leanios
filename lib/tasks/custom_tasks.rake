@@ -11,55 +11,32 @@ namespace :apartment do
 
     Apartment.tenants_with_config.each do |tenant_name, db_config|
       if db_config.present?
-        if db_config['database'] == 'primary'
-          case task_to_run
-          when 'db:migrate'
-            puts "Running 'db:migrate' for the primary database directly."
-            Apartment::Migrator.migrate tenant_name
-            puts 'Migrate completed for the primary database.'
-          when 'db:rollback'
-            puts "Running 'db:rollback' for the primary database directly."
-            Apartment::Migrator.rollback tenant_name
-            puts 'Rollback completed for the primary database.'
-          when 'db:seed'
-            puts "Running 'db:seed' for the primary database directly."
-            Apartment::Tenant.seed
-            puts 'Seed completed for the primary database.'
-          else
-            puts "Unsupported task: #{task_to_run}"
-            exit(1)
-          end
-        else
-
+        if db_config['database'] != 'primary'
+          puts '======================================='
           # Establish the connection to the tenant's database using Apartment's configuration
-          ActiveRecord::Base.establish_connection(db_config)
-
-          # Log that the connection is successfully established
-          puts '======================================='
-          puts ActiveRecord::Base.connection.current_database
+          #ActiveRecord::Base.establish_connection(db_config)
+          puts db_config['database']
           # Log tenant-specific information
-          puts '======================================='
-
-          # puts Rake::Task[task_to_run].execute
-          case task_to_run
-          when 'db:migrate'
-            puts "Running 'db:migrate' for tenant: #{tenant_name}"
-            Apartment::Migrator.migrate tenant_name
-            puts "Migration completed for tenant: #{tenant_name}"
-          when 'db:rollback'
-            puts "Running 'db:rollback' for tenant: #{tenant_name}"
-            Apartment::Migrator.rollback tenant_name
-            puts "Rollback completed for tenant: #{tenant_name}"
-          when 'db:seed'
-            puts "Running 'db:seed' for tenant: #{tenant_name}"
-            Apartment::Tenant.seed
-            puts "Seed completed for tenant: #{tenant_name}"
-          else
-            puts "Unsupported task: #{task_to_run}"
-            exit(1)
-          end
-          ActiveRecord::Base.establish_connection(:primary)
+          puts '---------------------------------------'
         end
+        case task_to_run
+        when 'db:migrate'
+          puts "Running 'db:migrate' for tenant: #{tenant_name}"
+          Apartment::Migrator.migrate tenant_name
+          puts "Migration completed for tenant: #{tenant_name}"
+        when 'db:rollback'
+          puts "Running 'db:rollback' for tenant: #{tenant_name}"
+          Apartment::Migrator.rollback tenant_name
+          puts "Rollback completed for tenant: #{tenant_name}"
+        when 'db:seed'
+          puts "Running 'db:seed' for tenant: #{tenant_name}"
+          Apartment::Tenant.seed
+          puts "Seed completed for tenant: #{tenant_name}"
+        else
+          puts "Unsupported task: #{task_to_run}"
+          exit(1)
+        end
+        ActiveRecord::Base.establish_connection(:primary)
       else
         puts "No database configuration found for tenant: #{tenant_name}"
       end
