@@ -17,7 +17,7 @@ services:
       - 5433:5432
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_DB: postgres
+      POSTGRES_DB: primary
       POSTGRES_PASSWORD: postgres
   redis:
     image: redis:7-alpine
