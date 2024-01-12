@@ -14,6 +14,8 @@ module Apartment
     private
 
     def handle_tenant_database_change(tenant)
+      return if tenant == 'public'
+
       # establish connection with the tenant database
       tenant_ob = Company.find_by(subdomain: tenant)
       ActiveRecord::Base.establish_connection(tenant_ob.database_config)
