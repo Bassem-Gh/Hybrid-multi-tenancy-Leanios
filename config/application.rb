@@ -14,10 +14,11 @@ module HybridMultiTenant
     # config.middleware.use Apartment::Elevators::Subdomain
     # config.middleware.use Apartment::Elevators::Host# Use the custom elevator you created
     config.middleware.use Apartment::Elevators::Generic, proc { |request|
-      subdomain = request.host.split('.').first
-      # Always establish a connection to the primary database initially to retreive database informations
+      puts request.host
+      subdomain = request.host.split('.')[0]
+            # Always establish a connection to the primary database initially to retreive database informations
       ActiveRecord::Base.establish_connection(:primary)
-      if subdomain == 'www' || subdomain.nil?
+      if subdomain == 'www' || subdomain.nil? || subdomain == 'lvh'
         Apartment::Tenant.switch!('public')
       else
         Apartment::Tenant.switch!(subdomain)

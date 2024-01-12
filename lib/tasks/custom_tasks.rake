@@ -1,9 +1,8 @@
 namespace :apartment do
-  desc 'Run migrations or rollback for all tenants in a multi-server setup'
+  desc 'Run migrations or rollback for all tenants in a multi-server multi-database setup'
 
   task :multi_db, [:task_to_run] => :environment do |_, args|
     task_to_run = args[:task_to_run]
-
     unless task_to_run.present?
       puts 'Please specify a task to run (e.g., db:migrate, db:rollback, etc.)'
       exit(1)
@@ -11,7 +10,7 @@ namespace :apartment do
 
     Apartment.tenants_with_config.each do |tenant_name, db_config|
       if db_config.present?
-        if db_config['database'] != 'primary'
+        if db_config['database'] != Rails.configuration.database_configuration['development'].keys
           puts '======================================='
           # Establish the connection to the tenant's database using Apartment's configuration
           #ActiveRecord::Base.establish_connection(db_config)
