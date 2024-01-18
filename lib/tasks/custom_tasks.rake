@@ -10,14 +10,13 @@ namespace :apartment do
 
     Apartment.tenants_with_config.each do |tenant_name, db_config|
       if db_config.present?
-        if db_config['database'] != Rails.configuration.database_configuration['development'].keys
-          puts '======================================='
-          # Establish the connection to the tenant's database using Apartment's configuration
-          #ActiveRecord::Base.establish_connection(db_config)
-          puts db_config['database']
-          # Log tenant-specific information
-          puts '---------------------------------------'
-        end
+        # check if the tenant database not on the primary database
+        # if db_config['database'] != Rails.configuration.database_configuration[Rails.env].keys
+        puts '======================================='
+        puts db_config['database']
+        # Log tenant-specific information
+        puts '---------------------------------------'
+        # end
         case task_to_run
         when 'db:migrate'
           puts "Running 'db:migrate' for tenant: #{tenant_name}"

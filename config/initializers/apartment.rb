@@ -61,8 +61,6 @@ Apartment.configure do |config|
   #   }
 
   # }
-
-  
   config.tenant_names = lambda do
     Company.all.each_with_object({}) do |tenant, hash|
       hash[tenant.subdomain] = tenant.database_config
@@ -131,4 +129,4 @@ end
 # Rails.application.config.middleware.use Apartment::Elevators::Subdomain
 # Rails.application.config.middleware.use Apartment::Elevators::FirstSubdomain
 # Rails.application.config.middleware.use Apartment::Elevators::Host
-Apartment::Elevators::Subdomain.excluded_subdomains = ['www']
+Apartment::Elevators::Subdomain.excluded_subdomains = ['www','',nil,'lvh']
